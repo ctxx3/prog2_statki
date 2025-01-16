@@ -3,6 +3,7 @@ namespace prog2_statki.Models
     public class Player{
         public int[,] board = new int[8,8];
         private int _Id;
+        public int hits = 0;
 
         private readonly int[] _Ships = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
 
@@ -62,5 +63,27 @@ namespace prog2_statki.Models
                 Console.WriteLine();
             }
         }
+
+        public int Shoot(Player enemy)
+        {
+            Console.WriteLine("Enter coordinates to shoot (x y): ");
+            string[] input = Console.ReadLine().Split(' ');
+            int x = int.Parse(input[0]);
+            int y = int.Parse(input[1]);
+
+            if (enemy.board[x, y] == 1)
+            {
+                enemy.board[x, y] = 2; // Mark as hit
+                hits++;
+                return 1;
+            }
+            else
+            {
+                enemy.board[x, y] = 3; // Mark as miss
+                return 0;
+            }
+        }
     }
+    
+    
 }
