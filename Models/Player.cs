@@ -9,15 +9,58 @@ namespace prog2_statki.Models
         public Player(int id){
             // Placeholder for player constructor
             _Id = id;
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    board[i,j] = 0;
+                }
+            }
             Console.WriteLine("Player created");
         }
 
         public void SetupBoard(){
             Console.WriteLine("Setting up the board");
+            int[] cursor = {0, 0};
+            bool rotated = false;
+            bool accepted = false;
+            int currentShip = 0;
+
+            while(!accepted){
+                // Redraw the board
+                Console.Clear();
+                Console.WriteLine("Player " + _Id + " setup board");
+                DrawBoard();
+                Console.WriteLine("Current piece: " + currentShip + " / " + _Ships.Length);
+                Console.WriteLine("Rotated: " + rotated);
+                Console.WriteLine("Arrows: move cursor, Space: rotate, Enter: place, R: reset");
+                Console.ReadKey();
+            }
         }
 
         private void DrawBoard(){
-
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    switch (board[i,j])
+                    {
+                        case 0:
+                            Console.Write(" ");
+                            break;
+                        case 1:
+                            Console.Write("O");
+                            break;
+                        case 2:
+                            Console.Write("X");
+                            break;
+                        default:
+                            Console.Write(" ");
+                            break;
+                    }
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
