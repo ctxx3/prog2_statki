@@ -11,13 +11,13 @@ namespace prog2_statki.Models
         public void Start()
         {
             // ustawianie plansz
-            SetupBoard(players[0]);
-            SetupBoard(players[1]);
+            players[0].SetupBoard();
+            players[1].SetupBoard();
             // zaczęcie gry
             while (true)
             {
                 // ruch gracza
-                NextTurn(players[_Current_turn]);
+                NextTurn();
                 // sprawdzenie czy gra się skończyła
                 if(IsGameOver()){
                     break;
@@ -25,11 +25,7 @@ namespace prog2_statki.Models
             }
             // koniec gry
         }
-
-        private void SetupBoard(Player player){
-            // Placeholder for setting up the board
-        }
-        private void NextTurn(Player player)
+        private void NextTurn()
         {
             _Current_turn = (_Current_turn + 1) % 2;
         }
