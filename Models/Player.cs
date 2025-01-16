@@ -116,24 +116,79 @@ namespace prog2_statki.Models
             Console.SetCursorPosition(0, 8);
         }
 
+        private void DrawBoardShooting(int x, int y, Player enemy)
+        {
+            Console.Clear();
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    Console.Write(enemy.board[i, j] switch
+                    {
+                        2 => "X", // Hit
+                        3 => ".", // Miss
+                        _ => " "  // Unknown or ship
+                    });
+                }
+                Console.WriteLine();
+            }
+        
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.SetCursorPosition(x, y);
+            Console.Write("+");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, 8);
+        }
+        
         public int Shoot(Player enemy)
         {
-            Console.WriteLine("Enter coordinates to shoot (x y): ");
-            string[] input = Console.ReadLine().Split(' ');
-            int x = int.Parse(input[0]);
-            int y = int.Parse(input[1]);
-
-            if (enemy.board[x, y] == 1)
+            int[] cursor = { 0, 0 };
+            bool shotTaken = false;
+        
+            while (!shotTaken)
             {
-                enemy.board[x, y] = 2; // Mark as hit
-                hits++;
-                return 1;
+                Console.Clear();
+                DrawBoardShooting(cursor[0], cursor[1], enemy);
+                Console.WriteLine($"Player {_Id}'s turn to shoot");
+                Console.WriteLine($"Hits: {hits}");
+                Console.WriteLine("Arrows: move cursor, Enter: shoot");
+        
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        cursor[1] = Math.Max(0, cursor[1] - 1);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        cursor[1] = Math.Min(7, cursor[1] + 1);
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        cursor[0] = Math.Max(0, cursor[0] - 1);
+                        break;
+                    case ConsoleKey.RightArrow:
+                        cursor[0] = Math.Min(7, cursor[0] + 1);
+                        break;
+                    case ConsoleKey.Enter:
+                        if (enemy.board[cursor[1], cursor[0]] != 2 && 
+                            enemy.board[cursor[1], cursor[0]] != 3)
+                        {
+                            if (enemy.board[cursor[1], cursor[0]] == 1)
+                            {
+                                enemy.board[cursor[1], cursor[0]] = 2; // Hit
+                                hits++;
+                                shotTaken = true;
+                                return 1;
+                            }
+                            else
+                            {
+                                enemy.board[cursor[1], cursor[0]] = 3; // Miss
+                                shotTaken = true;
+                                return 0;
+                            }
+                        }
+                        break;
+                }
             }
-            else
-            {
-                enemy.board[x, y] = 3; // Mark as miss
-                return 0;
-            }
+            return 0;
         }
     }
 

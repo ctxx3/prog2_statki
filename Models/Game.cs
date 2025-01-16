@@ -33,16 +33,8 @@ namespace prog2_statki.Models
         }
         private void NextTurn()
         {
-
-            if (players[_Current_turn].Shoot(players[1 - _Current_turn]) == 1)
-            {
-                Console.WriteLine("Hit");
-            }
-            else
-            {
-                Console.WriteLine("Miss");
-            }
-            
+            players[_Current_turn].Shoot(players[1 - _Current_turn]);
+            _Current_turn = 1 - _Current_turn;
             
         }
 
