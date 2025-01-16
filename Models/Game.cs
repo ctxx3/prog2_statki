@@ -33,13 +33,31 @@ namespace prog2_statki.Models
         }
         private void NextTurn()
         {
-            _Current_turn = (_Current_turn + 1) % 2;
-            Console.ReadKey();
+
+            if (players[_Current_turn].Shoot(players[1 - _Current_turn]) == 1)
+            {
+                Console.WriteLine("Hit");
+            }
+            else
+            {
+                Console.WriteLine("Miss");
+            }
+            
+            
         }
 
         private bool IsGameOver()
         {
-            // Placeholder for checking if the game is over
+            if(players[0].hits == 20){
+                Console.WriteLine("Player 0 wins");
+                return true;
+            }
+            if(players[1].hits == 20){
+                Console.WriteLine("Player 1 wins");
+                return true;
+            }
+            
+            
             return false;
         }
     }
